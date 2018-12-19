@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mutant\DNA;
 
+use App\Mutant\MessagesTrait;
 use Zend\Validator\ValidatorInterface;
 
 class DNAValidator implements ValidatorInterface
@@ -27,7 +28,7 @@ class DNAValidator implements ValidatorInterface
 
             foreach ($pieces as $piece) {
                 if (!\in_array($piece, self::VALID_LETTERS)) {
-                    $this->messages = "Letters of DNA can only be A, T, C or G";
+                    $this->messages = "Invalid nitrogenous bases found, it should be only A, T, C, G";
                     return false;
                 }
             }
@@ -36,8 +37,5 @@ class DNAValidator implements ValidatorInterface
         return true;
     }
 
-    public function getMessages(): string
-    {
-        return $this->messages;
-    }
+    use MessagesTrait;
 }
