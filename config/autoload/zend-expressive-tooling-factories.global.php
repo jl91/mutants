@@ -12,8 +12,9 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'factories' => [
-            App\Mutant\Mutant::class => App\Mutant\MutantFactory::class,
-            App\Mutant\MutantService::class => \App\Mutant\MutantServiceFactory::class
-        ]
+            App\Mutant\DNA\DNAValidatorHandler::class => App\Mutant\DNA\DNAValidatorHandlerFactory::class,
+            App\Mutant\Handler\MutantHandler::class => App\Mutant\Handler\MutantHandlerFactory::class,
+            App\Mutant\Service\MutantService::class => App\Mutant\Service\MutantServiceFactory::class,
+        ],
     ],
 ];

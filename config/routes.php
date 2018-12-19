@@ -32,6 +32,13 @@ use Zend\Expressive\MiddlewareFactory;
  *     'contact'
  * );
  */
-return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    $app->post('/mutant', App\Mutant\Mutant::class, 'mutant.home');
+return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
+    $app->post(
+        '/mutant',
+        [
+            App\Mutant\DNA\DNAValidatorHandler::class,
+            App\Mutant\Handler\MutantHandler::class
+        ],
+        'mutant.home'
+    );
 };

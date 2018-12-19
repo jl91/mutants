@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Mutant;
+namespace App\Mutant\Handler;
 
+use App\Mutant\Service\MutantService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Http\Response;
 
-class Mutant implements RequestHandlerInterface
+class MutantHandler implements RequestHandlerInterface
 {
     /**
      * @var null
@@ -29,13 +30,19 @@ class Mutant implements RequestHandlerInterface
             ->isMutant([]);
 
         if ($isMutante) {
-            return new JsonResponse([
-                'isMutant' => true
-            ], Response::STATUS_CODE_200);
+            return new JsonResponse(
+                [
+                    'isMutant' => $isMutante
+                ],
+                Response::STATUS_CODE_200
+            );
         }
 
-        return new JsonResponse([
-            'isMutant' => false
-        ], Response::STATUS_CODE_403);
+        return new JsonResponse(
+            [
+                'isMutant' => $isMutante
+            ],
+            Response::STATUS_CODE_403
+        );
     }
 }

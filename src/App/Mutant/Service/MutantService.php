@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Mutant;
+namespace App\Mutant\Service;
 
 class MutantService
 {
