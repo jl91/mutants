@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   web-server:
-    image: jlennon91/php:1.0.5
+    image: jlennon91/php:1.0.8
     restart: always
     ports:
       - 8080:80
@@ -11,17 +11,17 @@ services:
       - .:/var/www/html/app
     depends_on:
       - mongo
+    links:
+      - mongo
 
   mongo:
     image: mongo
     restart: always
     expose:
       - 27017
-    ports:
-      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_ROOT_PASSWORD: example
 
   mongo-express:
     image: mongo-express
