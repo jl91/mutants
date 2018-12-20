@@ -12,6 +12,7 @@ class DNAValidator implements ValidatorInterface
     const VALID_LETTERS = [
         'A', 'T', 'C', 'G'
     ];
+    const MINIMUM_SIZE = 0;
 
     private $messages = '';
 
@@ -19,7 +20,12 @@ class DNAValidator implements ValidatorInterface
     {
 
         if (!\is_array($value)) {
-            $this->messages = "Input should be a array";
+            $this->messages = "Input nitrogenous bases should be a array";
+            return false;
+        }
+
+        if (count($value) <= self::MINIMUM_SIZE) {
+            $this->messages = "Input nitrogenous bases cannot be empty";
             return false;
         }
 
