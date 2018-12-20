@@ -36,7 +36,5 @@ class DNAValidatorHandler implements MiddlewareInterface
         }
 
         return $handler->handle($request);
-
     }
-
 }

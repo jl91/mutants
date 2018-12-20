@@ -37,8 +37,8 @@ class MutantHandler implements RequestHandlerInterface
     public function __construct(
         MutantService $mutantService,
         MutantDNAValidator $mutantDNAValidator
-    )
-    {
+    ) {
+
         $this->mutantService = $mutantService;
         $this->mutantDNAValidator = $mutantDNAValidator;
     }
@@ -69,6 +69,4 @@ class MutantHandler implements RequestHandlerInterface
             Response::STATUS_CODE_403
         );
     }
-
-
 }

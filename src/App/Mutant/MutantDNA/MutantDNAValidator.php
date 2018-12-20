@@ -29,8 +29,7 @@ class MutantDNAValidator implements ValidatorInterface
         $rows = count($dnaMatrix);
         $columns = count($dnaMatrix[0]);
 
-        if (
-            $rows < self::MINIMUM_MUTANT_SIZE ||
+        if ($rows < self::MINIMUM_MUTANT_SIZE ||
             $columns < self::MINIMUM_MUTANT_SIZE
         ) {
             $this->messages = 'Input nitrogenous bases has no minimum size to be from a mutant';
