@@ -2,6 +2,12 @@ version: '3.1'
 
 services:
 
+  web-server:
+    image: jlennon91/php
+    restart: always
+    ports:
+      - 2201:80
+
   mongo:
     image: mongo
     restart: always
