@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 // Delegate static file requests back to the PHP built-in webserver
