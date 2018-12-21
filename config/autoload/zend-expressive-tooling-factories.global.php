@@ -6,7 +6,7 @@
  * removing factory definitions; other dependency types may be overwritten
  * when regenerating this file via zend-expressive-tooling commands.
  */
- 
+
 declare(strict_types=1);
 
 return [
@@ -17,6 +17,8 @@ return [
             App\Mutant\Handler\MutantHandler::class => App\Mutant\Handler\MutantHandlerFactory::class,
             App\Mutant\MutantStats\MutantStatsHandler::class => App\Mutant\MutantStats\MutantStatsHandlerFactory::class,
             App\Mutant\Service\MutantService::class => App\Mutant\Service\MutantServiceFactory::class,
+            \MongoDB\Driver\Manager::class => Mongo\ManagerFactory::class,
+            \MongoDB\Driver\WriteConcern::class => Mongo\WriteConcernFactory::class
         ],
     ],
 ];

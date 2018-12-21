@@ -57,7 +57,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/App/"
+            "App\\": "src/App/",
+            "Mongo\\": "src/Mongo/"
         }
     },
     "autoload-dev": {
