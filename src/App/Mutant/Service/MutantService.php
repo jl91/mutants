@@ -18,6 +18,9 @@ use MongoDB\Driver\WriteConcern;
 /**
  * Class MutantService
  * @package App\Mutant\Service
+ * @codeCoverageIgnore
+ * Ignorado pq a classe do provida do driver do mongo é final,  é possível aplicar reflection em final classes
+ * con isso não é possivel criar um mock dele.
  */
 class MutantService
 {

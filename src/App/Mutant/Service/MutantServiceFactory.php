@@ -11,6 +11,9 @@ use Psr\Container\ContainerInterface;
 /**
  * Class MutantServiceFactory
  * @package App\Mutant\Service
+ * @codeCoverageIgnore
+ * Ignorado pq a classe do provida do driver do mongo é final,  é possível aplicar reflection em final classes
+ * con isso não é possivel criar um mock dele.
  */
 class MutantServiceFactory
 {

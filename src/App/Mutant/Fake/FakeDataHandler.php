@@ -16,6 +16,7 @@ use Zend\Http\Response;
  * Class FakeDataHandler
  * @package App\Mutant\Fake
  * @codeCoverageIgnore
+ * Ignorado pq não faz sentido testar uma classe de teste que não vai pra produção
  */
 class FakeDataHandler implements RequestHandlerInterface
 {

@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
  * Class FakeDataHandlerFactory
  * @package App\Mutant\Fake
  * @codeCoverageIgnore
+ * Ignorado pq não faz sentido testar uma classe de teste que não vai pra produção
  */
 class FakeDataHandlerFactory
 {
