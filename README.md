@@ -34,10 +34,7 @@ Há ainda um endpoint adicional que foi muito utilizado em tempo de desenvolvime
 POST = `http://localhost:8888/generate-fake-data/100` aonde 100 é a quantidade de registros que desejamos criar.
 
 # Testes
-- Para rodar os testes unitário rode o comando, `composer test`;
-
-- Para gerar os relatório de cobertura rode comando `composer test-coverage`;
-  
+- Para rodar os testes unitário rode o comando, `docker-compose run composer run-script test`;
   
 # Cloud
 
