@@ -5,6 +5,8 @@ namespace AppTest\Mutant\Handler;
 use App\Mutant\Handler\MutantHandler;
 use App\Mutant\MutantDNA\MutantDNAValidator;
 use App\Mutant\Service\MutantService;
+use AppTest\Helpers\ContainerMock;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -19,22 +21,17 @@ use Zend\Http\Response;
 class MutantHandlerTest extends TestCase
 {
 
-    /** @var MutantService|ObjectProphecy */
-    protected $service;
-
-    /** @var StreamInterface|ObjectProphecy */
-    protected $stream;
-
-    /** @var ServerRequestInterface|ObjectProphecy */
-    protected $request;
-
-    /** @var MutantDNAValidator|ObjectProphecy */
-    protected $mutantValidator;
+    /** @var Container|ObjectProphecy */
+    protected $container;
 
     /**
      * @var
      */
     protected $instance;
+    /**
+     * @var MutantService|MockObject
+     */
+    protected $service;
 
     public function test__construct()
     {
@@ -45,18 +42,13 @@ class MutantHandlerTest extends TestCase
     public function testHandle()
     {
         $this->setRequestData();
-        $this->service->persist()->willReturn(true);
-        $this->mutantValidator->isValid()->willReturn(true);
 
-        $response = $this->instance->handle($this->request->reveal());
+        $response = $this->instance->handle($this->container->get(ServerRequestInterface::class));
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::STATUS_CODE_200, $response->getStatusCode());
 
+        $response = $this->instance->handle($this->container->get(ServerRequestInterface::class));
 
-        $this->setRequestData();
-        $response = $this->instance->handle($this->request->reveal());
-        $this->mutantValidator->isValid()->willReturn(false);
-        $this->service->persist()->willReturn(false);
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::STATUS_CODE_200, $response->getStatusCode());
     }
@@ -73,21 +65,36 @@ class MutantHandlerTest extends TestCase
             "TCACTG"
         ];
 
-        $this->stream->getContents()->willReturn(json_encode($requestContent));
-        $this->request->getBody()->willReturn($this->stream);
-        return $this->request->reveal();
+        ContainerMock::$instances[StreamInterface::class]
+            ->getContents()
+            ->willReturn(json_encode($requestContent));
+
+        ContainerMock::$instances[ServerRequestInterface::class]
+            ->getBody()
+            ->willReturn(ContainerMock::$instances[StreamInterface::class]);
+    }
+
+    public function testHandleException()
+    {
+        $this->setRequestData();
+        $this->service->method('persist')->willThrowException(new \Exception());
+        $response = $this->instance->handle($this->container->get(ServerRequestInterface::class));
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::STATUS_CODE_500, $response->getStatusCode());
     }
 
     protected function setUp()
     {
-        $this->stream = $this->prophesize(StreamInterface::class);
-        $this->request = $this->prophesize(ServerRequestInterface::class);
-        $this->service = $this->prophesize(MutantService::class);
-        $this->mutantValidator = $this->prophesize(MutantDNAValidator::class);
+        $this->container = ContainerMock::getinstance();
 
+        ContainerMock::$instances[MutantService::class]->reveal();
+
+        $this->service = parent::getMockBuilder(MutantService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->instance = new MutantHandler(
-            $this->service->reveal(),
-            $this->mutantValidator->reveal()
+            $this->service,
+            new MutantDNAValidator()
         );
     }
 }

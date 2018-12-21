@@ -3,20 +3,25 @@ declare(strict_types=1);
 
 namespace AppTest\Helpers;
 
+use App\Mutant\MutantDNA\MutantDNAValidator;
 use App\Mutant\MutantStats\MutantStatsEntity;
 use App\Mutant\Service\MutantService;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
 class ContainerMock extends \PHPUnit\Framework\TestCase
 {
     static $instances = [];
+
     private static $dependencies = [
+        'config',
         RouterInterface::class,
         MutantService::class,
         ServerRequestInterface::class,
         \MongoDB\Driver\Manager::class,
-        'config'
+        StreamInterface::class,
+        MutantDNAValidator::class
     ];
     private static $configs = [
         'mongo'
@@ -45,4 +50,5 @@ class ContainerMock extends \PHPUnit\Framework\TestCase
 
         return $container->reveal();
     }
+
 }
