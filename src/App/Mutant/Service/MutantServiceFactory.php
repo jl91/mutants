@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mutant\Service;
 
-use MongoDB\Driver\Manager;
+use \MongoDB\Driver\Manager;
+use \MongoDB\Driver\WriteConcern;
 use Psr\Container\ContainerInterface;
 
 class MutantServiceFactory
@@ -21,6 +22,7 @@ class MutantServiceFactory
             $mongodb['database']
         );
         $mongo = new Manager($mongoUrl);
-        return new MutantService($mongo);
+        $writeConcern = new WriteConcern(WriteConcern::MAJORITY, 1000);
+        return new MutantService($mongo, $writeConcern);
     }
 }

@@ -37,7 +37,8 @@ class MutantHandler implements RequestHandlerInterface
     public function __construct(
         MutantService $mutantService,
         MutantDNAValidator $mutantDNAValidator
-    ) {
+    )
+    {
 
         $this->mutantService = $mutantService;
         $this->mutantDNAValidator = $mutantDNAValidator;
@@ -52,6 +53,11 @@ class MutantHandler implements RequestHandlerInterface
         $rawData = $request->getBody()->getContents();
         $parsedBody = json_decode($rawData)->dna;
         $isMutante = $this->mutantDNAValidator->isValid($parsedBody);
+
+        if ($isMutante) {
+            $this->mutantService
+                ->persist($parsedBody);
+        }
 
         if ($isMutante) {
             return new JsonResponse(
