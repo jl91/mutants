@@ -39,7 +39,6 @@ class MutantHandler implements RequestHandlerInterface
         MutantDNAValidator $mutantDNAValidator
     )
     {
-
         $this->mutantService = $mutantService;
         $this->mutantDNAValidator = $mutantDNAValidator;
     }
@@ -50,29 +49,32 @@ class MutantHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $rawData = $request->getBody()->getContents();
-        $parsedBody = json_decode($rawData)->dna;
-        $isMutante = $this->mutantDNAValidator->isValid($parsedBody);
+        try {
+            $rawData = $request->getBody()->getContents();
 
-        if ($isMutante) {
+            $parsedBody = json_decode($rawData)->dna;
+
+            $isMutante = $this->mutantDNAValidator
+                ->isValid($parsedBody);
+
             $this->mutantService
-                ->persist($parsedBody);
-        }
+                ->persist($parsedBody, $isMutante);
 
-        if ($isMutante) {
+            $status = $isMutante ? Response::STATUS_CODE_200 : Response::STATUS_CODE_403;
+
             return new JsonResponse(
                 [
                     'isMutant' => $isMutante
                 ],
-                Response::STATUS_CODE_200
+                $status
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                [
+                    'error' => 'I\'m sorry, something went wrong!'
+                ],
+                Response::STATUS_CODE_500
             );
         }
-
-        return new JsonResponse(
-            [
-                'isMutant' => $isMutante
-            ],
-            Response::STATUS_CODE_403
-        );
     }
 }

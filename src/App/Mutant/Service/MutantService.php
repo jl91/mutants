@@ -29,7 +29,7 @@ class MutantService
         $this->writeConcern = $writeConcern;
     }
 
-    public function persist(array $data): bool
+    public function persist(array $data, bool $isMutant): bool
     {
         $hasData = count($this->find($data)->toArray());
 
@@ -40,7 +40,7 @@ class MutantService
         try {
             $bulk = new BulkWrite(['ordered' => false]);
 
-            $prepareData = $this->prepareData($data);
+            $prepareData = $this->prepareData($data, $isMutant);
 
             $bulk->insert($prepareData);
 
@@ -83,12 +83,13 @@ class MutantService
             ->executeQuery(self::MAGNETO_NAMESPACE, $query);
     }
 
-    private function prepareData(array $data): DNAEntity
+    private function prepareData(array $data, bool $isMutant): DNAEntity
     {
         $dnaEntity = new DNAEntity();
         $dnaEntity->data = implode('|', $data);
         $dnaEntity->rows = count($data);
         $dnaEntity->columns = strlen($data[0]);
+        $dnaEntity->isMutant = $isMutant;
         return $dnaEntity;
     }
 }
