@@ -11,15 +11,30 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Http\Response;
 
+/**
+ * Class MutantStatsHandler
+ * @package App\Mutant\MutantStats
+ */
 class MutantStatsHandler implements RequestHandlerInterface
 {
+    /**
+     * @var MutantService|null
+     */
     private $mutantService = null;
 
+    /**
+     * MutantStatsHandler constructor.
+     * @param MutantService $mutantService
+     */
     public function __construct(MutantService $mutantService)
     {
         $this->mutantService = $mutantService;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {

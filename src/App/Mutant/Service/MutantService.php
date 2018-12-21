@@ -15,13 +15,31 @@ use MongoDB\Driver\Manager;
 use MongoDB\Driver\Query;
 use MongoDB\Driver\WriteConcern;
 
+/**
+ * Class MutantService
+ * @package App\Mutant\Service
+ */
 class MutantService
 {
+    /**
+     *
+     */
     const MAGNETO_NAMESPACE = 'magneto.mutants';
 
+    /**
+     * @var Manager|null
+     */
     private $mongo = null;
+    /**
+     * @var WriteConcern|null
+     */
     private $writeConcern = null;
 
+    /**
+     * MutantService constructor.
+     * @param Manager $mongo
+     * @param WriteConcern $writeConcern
+     */
     public function __construct(
         Manager $mongo,
         WriteConcern $writeConcern
@@ -31,6 +49,11 @@ class MutantService
         $this->writeConcern = $writeConcern;
     }
 
+    /**
+     * @param array $data
+     * @param bool $isMutant
+     * @return bool
+     */
     public function persist(array $data, bool $isMutant): bool
     {
         $hasData = count($this->find($data)->toArray());
@@ -78,6 +101,11 @@ class MutantService
         }
     }
 
+    /**
+     * @param $data
+     * @return Cursor
+     * @throws MongoDBDriverException
+     */
     public function find($data): Cursor
     {
         $query = new Query(['data' => implode('|', $data)]);
@@ -85,6 +113,11 @@ class MutantService
             ->executeQuery(self::MAGNETO_NAMESPACE, $query);
     }
 
+    /**
+     * @param array $data
+     * @param bool $isMutant
+     * @return DNAEntity
+     */
     private function prepareData(array $data, bool $isMutant): DNAEntity
     {
         $dnaEntity = new DNAEntity();
@@ -95,6 +128,9 @@ class MutantService
         return $dnaEntity;
     }
 
+    /**
+     * @return MutantStatsEntity
+     */
     public function fetchStats(): MutantStatsEntity
     {
         $mutantStatsEntity = new MutantStatsEntity();
@@ -104,6 +140,11 @@ class MutantService
         return $mutantStatsEntity;
     }
 
+    /**
+     * @param $isMutant
+     * @return int
+     * @throws MongoDBDriverException
+     */
     private function fetchTotalDNA($isMutant): int
     {
         $command = new Command([
@@ -125,6 +166,10 @@ class MutantService
         return 0;
     }
 
+    /**
+     * @param bool $isMutant
+     * @return array
+     */
     private function getPipelineForStats(bool $isMutant = false): array
     {
         return [
@@ -150,6 +195,10 @@ class MutantService
         ];
     }
 
+    /**
+     * @param MutantStatsEntity $mutantStatsEntity
+     * @return float
+     */
     private function calculateRatio(MutantStatsEntity $mutantStatsEntity): float
     {
         $gdcObject = \gmp_gcd($mutantStatsEntity->count_mutant_dna, $mutantStatsEntity->count_human_dna);
@@ -157,3 +206,4 @@ class MutantService
         return (float)($mutantStatsEntity->count_human_dna / $gdc . '.' . $mutantStatsEntity->count_mutant_dna / $gdc);
     }
 }
+

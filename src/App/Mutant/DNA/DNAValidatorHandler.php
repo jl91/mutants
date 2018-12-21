@@ -11,15 +11,31 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Http\Response;
 
+/**
+ * Class DNAValidatorHandler
+ * @package App\Mutant\DNA
+ */
 class DNAValidatorHandler implements MiddlewareInterface
 {
+    /**
+     * @var DNAValidator|null
+     */
     private $validator = null;
 
+    /**
+     * DNAValidatorHandler constructor.
+     * @param DNAValidator $validator
+     */
     public function __construct(DNAValidator $validator)
     {
         $this->validator = $validator;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
 
@@ -38,3 +54,4 @@ class DNAValidatorHandler implements MiddlewareInterface
         return $handler->handle($request);
     }
 }
+

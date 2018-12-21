@@ -12,11 +12,27 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Http\Response;
 
+/**
+ * Class FakeDataHandler
+ * @package App\Mutant\Fake
+ * @codeCoverageIgnore
+ */
 class FakeDataHandler implements RequestHandlerInterface
 {
+    /**
+     * @var MutantService|null
+     */
     private $mutantService = null;
+    /**
+     * @var MutantDNAValidator|null
+     */
     private $mutantDNAValidator = null;
 
+    /**
+     * FakeDataHandler constructor.
+     * @param MutantService $mutantService
+     * @param MutantDNAValidator $mutantDNAValidator
+     */
     public function __construct(
         MutantService $mutantService,
         MutantDNAValidator $mutantDNAValidator
@@ -26,6 +42,10 @@ class FakeDataHandler implements RequestHandlerInterface
         $this->mutantDNAValidator = $mutantDNAValidator;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $quantity = $request->getAttribute('quantity', 100);
@@ -53,6 +73,9 @@ class FakeDataHandler implements RequestHandlerInterface
         );
     }
 
+    /**
+     * @return array
+     */
     private function generateData(): array
     {
         return [
@@ -65,6 +88,9 @@ class FakeDataHandler implements RequestHandlerInterface
         ];
     }
 
+    /**
+     * @return string
+     */
     private function generateRandomString()
     {
         $characters = implode('', [

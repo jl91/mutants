@@ -7,15 +7,32 @@ namespace App\Mutant\DNA;
 use App\Mutant\MessagesTrait;
 use Zend\Validator\ValidatorInterface;
 
+/**
+ * Class DNAValidator
+ * @package App\Mutant\DNA
+ */
 class DNAValidator implements ValidatorInterface
 {
+    /**
+     *
+     */
     const VALID_LETTERS = [
         'A', 'T', 'C', 'G'
     ];
+    /**
+     *
+     */
     const MINIMUM_SIZE = 0;
 
+    /**
+     * @var string
+     */
     private $messages = '';
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isValid($value): bool
     {
 
