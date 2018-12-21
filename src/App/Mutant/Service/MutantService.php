@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Mutant\Service;
 
 use App\Mutant\DNA\DNAEntity;
+use App\Mutant\MutantStats\MutantStatsEntity;
 use MongoDB\Driver\BulkWrite;
+use MongoDB\Driver\Command;
 use MongoDB\Driver\Cursor;
 use MongoDB\Driver\Exception\BulkWriteException;
 use MongoDB\Driver\Exception\Exception as MongoDBDriverException;
@@ -91,5 +93,70 @@ class MutantService
         $dnaEntity->columns = strlen($data[0]);
         $dnaEntity->isMutant = $isMutant;
         return $dnaEntity;
+    }
+
+    public function fetchStats(): MutantStatsEntity
+    {
+        $mutantStatsEntity = new MutantStatsEntity();
+        $mutantStatsEntity->count_mutant_dna = $this->fetchTotalDNA(true);
+        $mutantStatsEntity->count_human_dna = $this->fetchTotalDNA(false);
+        $unformatedRatio = $this->calculateRatio($mutantStatsEntity);
+        $mutantStatsEntity->ratio = (float)number_format($unformatedRatio, 2, '.', ',');
+
+        return $mutantStatsEntity;
+    }
+
+    private function fetchTotalDNA($isMutant): int
+    {
+        $command = new Command([
+            'aggregate' => 'mutants',
+            'pipeline' => $this->getPipelineForStats($isMutant),
+            'cursor' => new \stdClass()
+        ]);
+
+        $result = $this->mongo
+            ->executeCommand('magneto', $command)
+            ->toArray();
+
+        if (
+            count($result) &&
+            isset($result[0]->{'COUNT(*)'})
+        ) {
+            return $result[0]->{'COUNT(*)'};
+        }
+
+        return 0;
+    }
+
+    private function getPipelineForStats(bool $isMutant = false): array
+    {
+        return [
+            [
+                '$match' => [
+                    'isMutant' => $isMutant
+                ]
+            ],
+            [
+                '$group' => [
+                    '_id' => [],
+                    'COUNT(*)' => [
+                        '$sum' => 1
+                    ]
+                ]
+            ],
+            [
+                '$project' => [
+                    'COUNT(*)' => '$COUNT(*)',
+                    '_id' => 0
+                ]
+            ]
+        ];
+    }
+
+    private function calculateRatio(MutantStatsEntity $mutantStatsEntity): float
+    {
+        $total = $mutantStatsEntity->count_human_dna + $mutantStatsEntity->count_mutant_dna;
+        return $mutantStatsEntity->count_mutant_dna * 100 / $total;
+
     }
 }

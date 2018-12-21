@@ -39,6 +39,21 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
             App\Mutant\DNA\DNAValidatorHandler::class,
             App\Mutant\Handler\MutantHandler::class
         ],
-        'mutant.home'
+        'mutant.verification'
+    );
+    $app->get(
+        '/stats',
+        [
+            App\Mutant\MutantStats\MutantStatsHandler::class
+        ],
+        'mutant.stats'
+    );
+
+    $app->post(
+        '/generate-fake-data[/:quantity]',
+        [
+            App\Mutant\Fake\FakeDataHandler::class
+        ],
+        'mutant.fake.data'
     );
 };

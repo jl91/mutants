@@ -27,7 +27,7 @@ class MutantDNAValidator implements ValidatorInterface
         $dnaMatrix = $this->convertToMatrix($value);
 
         $rows = count($dnaMatrix);
-        $columns = count($dnaMatrix[0]);
+        $columns = count($dnaMatrix[self::MINIMUM_SIZE]);
 
         if ($rows < self::MINIMUM_MUTANT_SIZE ||
             $columns < self::MINIMUM_MUTANT_SIZE
@@ -36,8 +36,8 @@ class MutantDNAValidator implements ValidatorInterface
             return false;
         }
 
-        $hasNitrogenousBasesSequenceInRow = 0;
-        $hasNitrogenousBasesSequenceInColumn = 0;
+        $hasNitrogenousBasesSequenceInRow = self::MINIMUM_SIZE;
+        $hasNitrogenousBasesSequenceInColumn = self::MINIMUM_SIZE;
         $diagonals = [];
 
         foreach ($dnaMatrix as $row => $columns) {

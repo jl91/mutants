@@ -6,14 +6,16 @@
  * removing factory definitions; other dependency types may be overwritten
  * when regenerating this file via zend-expressive-tooling commands.
  */
-
+ 
 declare(strict_types=1);
 
 return [
     'dependencies' => [
         'factories' => [
             App\Mutant\DNA\DNAValidatorHandler::class => App\Mutant\DNA\DNAValidatorHandlerFactory::class,
+            App\Mutant\Fake\FakeDataHandler::class => App\Mutant\Fake\FakeDataHandlerFactory::class,
             App\Mutant\Handler\MutantHandler::class => App\Mutant\Handler\MutantHandlerFactory::class,
+            App\Mutant\MutantStats\MutantStatsHandler::class => App\Mutant\MutantStats\MutantStatsHandlerFactory::class,
             App\Mutant\Service\MutantService::class => App\Mutant\Service\MutantServiceFactory::class,
         ],
     ],
