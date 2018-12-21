@@ -15,7 +15,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-class HomePageHandlerTest extends TestCase
+class HomePageHandlerBKP extends TestCase
 {
     /** @var ContainerInterface|ObjectProphecy */
     protected $container;

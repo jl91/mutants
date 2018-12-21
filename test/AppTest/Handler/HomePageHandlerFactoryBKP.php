@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-class HomePageHandlerFactoryTest extends TestCase
+class HomePageHandlerFactoryBKP extends TestCase
 {
     /** @var ContainerInterface|ObjectProphecy */
     protected $container;

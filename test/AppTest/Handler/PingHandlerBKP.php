@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-class PingHandlerTest extends TestCase
+class PingHandlerBKP extends TestCase
 {
     public function testResponse()
     {

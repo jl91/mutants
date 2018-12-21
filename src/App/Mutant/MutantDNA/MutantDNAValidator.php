@@ -52,6 +52,8 @@ class MutantDNAValidator implements ValidatorInterface
     }
 
     /**
+     * Méto valida se tem intervalos em todas as possiveis verticais/ horizontais, mas fiquei na dúvida se deveria
+     * validar horizontais da direita para esquerda e as que ocorrem fora do ponto 1.1.
      * @param mixed $value
      * @return bool
      */
