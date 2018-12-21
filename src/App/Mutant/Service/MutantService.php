@@ -100,9 +100,7 @@ class MutantService
         $mutantStatsEntity = new MutantStatsEntity();
         $mutantStatsEntity->count_mutant_dna = $this->fetchTotalDNA(true);
         $mutantStatsEntity->count_human_dna = $this->fetchTotalDNA(false);
-        $unformatedRatio = $this->calculateRatio($mutantStatsEntity);
-        $mutantStatsEntity->ratio = (float)number_format($unformatedRatio, 2, '.', ',');
-
+        $mutantStatsEntity->ratio = $this->calculateRatio($mutantStatsEntity);
         return $mutantStatsEntity;
     }
 
@@ -155,8 +153,8 @@ class MutantService
 
     private function calculateRatio(MutantStatsEntity $mutantStatsEntity): float
     {
-        $total = $mutantStatsEntity->count_human_dna + $mutantStatsEntity->count_mutant_dna;
-        return $mutantStatsEntity->count_mutant_dna * 100 / $total;
-
+        $gdcObject = \gmp_gcd($mutantStatsEntity->count_mutant_dna, $mutantStatsEntity->count_human_dna);
+        $gdc = \gmp_strval($gdcObject);
+        return (float)($mutantStatsEntity->count_human_dna / $gdc . '.' . $mutantStatsEntity->count_mutant_dna / $gdc);
     }
 }

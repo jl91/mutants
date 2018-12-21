@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   web-server:
-    image: jlennon91/php:1.0.8
+    image: jlennon91/php:1.0.9
     restart: always
     ports:
       - 8080:80
