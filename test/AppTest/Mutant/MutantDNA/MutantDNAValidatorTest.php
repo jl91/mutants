@@ -83,7 +83,7 @@ class MutantDNAValidatorTest extends TestCase
     public function testIsMutant($dna, $expected)
     {
 
-        $actual = $this->instance->isValid($dna);
+        $actual = $this->instance->isMutant($dna);
         $this->assertEquals($expected, $actual);
 
     }
