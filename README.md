@@ -38,3 +38,10 @@ POST = `http://localhost:8888/generate-fake-data/100` aonde 100 é a quantidade 
 
 - Para gerar os relatório de cobertura rode comando `composer test-coverage`;
   
+  
+# Cloud
+
+A versão cloud foi hospedada na minha instância nano gratuita da amazon e a url para a api encontra-se no seguinte endereço de `http://magneto.letmehelpyou.com.br` ( o domínio é  meu ).
+
+Ps. explorem meu github, há bastante projetos legais, inclusive o meu chess em canvas que está hospedado aqui mesmo /jl91/chess.
+
