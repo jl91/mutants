@@ -6,7 +6,7 @@ services:
     image: jlennon91/php:1.0.9
     restart: always
     ports:
-      - 8080:80
+      - 8888:80
     volumes:
       - .:/var/www/html/app
     depends_on:
@@ -31,3 +31,9 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+  composer:
+    image: composer:latest
+    command: 'true'
+    volumes:
+      - .:/app

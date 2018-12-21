@@ -25,8 +25,8 @@ class MutantService
     public function __construct(
         Manager $mongo,
         WriteConcern $writeConcern
-    )
-    {
+    ) {
+
         $this->mongo = $mongo;
         $this->writeConcern = $writeConcern;
     }
@@ -50,13 +50,13 @@ class MutantService
                 ->executeBulkWrite(self::MAGNETO_NAMESPACE, $bulk, $this->writeConcern);
             $insertedCount = $result->getInsertedCount();
             return $insertedCount !== null && $insertedCount > 0;
-
         } catch (BulkWriteException $e) {
             $result = $e->getWriteResult();
 
             // Check if the write concern could not be fulfilled
             if ($writeConcernError = $result->getWriteConcernError()) {
-                printf("%s (%d): %s\n",
+                printf(
+                    "%s (%d): %s\n",
                     $writeConcernError->getMessage(),
                     $writeConcernError->getCode(),
                     var_export($writeConcernError->getInfo(), true)
@@ -65,7 +65,8 @@ class MutantService
 
             // Check if any write operations did not complete at all
             foreach ($result->getWriteErrors() as $writeError) {
-                printf("Operation#%d: %s (%d)\n",
+                printf(
+                    "Operation#%d: %s (%d)\n",
                     $writeError->getIndex(),
                     $writeError->getMessage(),
                     $writeError->getCode()
@@ -75,7 +76,6 @@ class MutantService
             printf("Other error: %s\n", $e->getMessage());
             exit;
         }
-
     }
 
     public function find($data): Cursor
@@ -116,8 +116,7 @@ class MutantService
             ->executeCommand('magneto', $command)
             ->toArray();
 
-        if (
-            count($result) &&
+        if (count($result) &&
             isset($result[0]->{'COUNT(*)'})
         ) {
             return $result[0]->{'COUNT(*)'};

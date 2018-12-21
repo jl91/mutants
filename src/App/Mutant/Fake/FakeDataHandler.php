@@ -20,8 +20,8 @@ class FakeDataHandler implements RequestHandlerInterface
     public function __construct(
         MutantService $mutantService,
         MutantDNAValidator $mutantDNAValidator
-    )
-    {
+    ) {
+
         $this->mutantService = $mutantService;
         $this->mutantDNAValidator = $mutantDNAValidator;
     }
@@ -51,7 +51,6 @@ class FakeDataHandler implements RequestHandlerInterface
             ],
             Response::STATUS_CODE_201
         );
-
     }
 
     private function generateData(): array
@@ -66,15 +65,14 @@ class FakeDataHandler implements RequestHandlerInterface
         ];
     }
 
-    function generateRandomString()
+    private function generateRandomString()
     {
         $characters = implode('', [
                 MutantDNAValidator::ADENINE_REQUENCE,
                 MutantDNAValidator::CYTOSINE_REQUENCE,
                 MutantDNAValidator::GUANINE_REQUENCE,
                 MutantDNAValidator::THYMINE_REQUENCE
-            ]
-        );
+            ]);
 
         $characters = str_shuffle($characters);
         $charactersLength = strlen($characters);
